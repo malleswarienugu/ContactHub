@@ -1,0 +1,867 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact Profile | ContactHub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #111512;
+            --surface: #f3f2e9;
+            --lime: #c8f169;
+            --ink: #263324;
+            --muted: #849080;
+            --border: #dfe4d8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: #f3f4ed;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 21px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,.09);
+            background: #151b16;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            background: var(--lime);
+            color: var(--ink);
+            border-radius: 14px;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 23px;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .header-tag {
+            color: var(--lime);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 90%;
+            margin: 40px auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 20px;
+            transition: .2s;
+        }
+
+        .back-link:hover {
+            color: var(--lime);
+        }
+
+        .card {
+            background: var(--surface);
+            color: var(--ink);
+            padding: 30px;
+            border-radius: 21px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.22);
+        }
+
+        /* PROFILE HEADER */
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 76px;
+            height: 76px;
+            min-width: 76px;
+            border-radius: 21px;
+            background: #e1edce;
+            color: #526d31;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Manrope', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .profile h2 {
+            margin: 0 0 8px;
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(23px, 4vw, 31px);
+            letter-spacing: -1px;
+            color: var(--ink);
+            overflow-wrap: anywhere;
+        }
+
+        .profile p {
+            margin: 0;
+            color: #71805f;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .profile-label {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 11px;
+            border-radius: 30px;
+            background: #e4ecd9;
+            color: #526d31;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
+
+        /* DETAILS */
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #607b3e;
+            margin: 27px 0 13px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .section-number {
+            width: 27px;
+            height: 27px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            background: #e2ebd3;
+            color: #526d31;
+            font-size: 11px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 11px;
+        }
+
+        .detail {
+            padding: 15px;
+            border: 1px solid #e4e8de;
+            background: #fafaf5;
+            border-radius: 11px;
+            min-width: 0;
+            transition: .2s;
+        }
+
+        .detail:hover {
+            border-color: #b9ce91;
+        }
+
+        .detail strong {
+            display: block;
+            color: #83907b;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            margin-bottom: 9px;
+        }
+
+        .detail span {
+            display: block;
+            color: #293526;
+            font-size: 13px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .notes {
+            background: #fafaf5;
+            border: 1px solid #e4e8de;
+            padding: 17px;
+            border-radius: 11px;
+            color: #46523f;
+            font-size: 13px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* REMINDERS */
+
+        .reminder-box {
+            margin-top: 13px;
+            padding: 21px;
+            background: #e9ede1;
+            border: 1px solid #dce4d1;
+            border-radius: 15px;
+        }
+
+        .reminder-box h3 {
+            font-family: 'Manrope', sans-serif;
+            color: #35452c;
+            font-size: 15px;
+            margin: 0 0 7px;
+        }
+
+        .reminder-description {
+            color: #7a8771;
+            font-size: 12px;
+            margin: 0 0 17px;
+        }
+
+        .reminder-box label {
+            display: block;
+            margin: 13px 0 7px;
+            font-weight: 700;
+            color: #53644a;
+            font-size: 11px;
+        }
+
+        .reminder-box input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #d5ddcc;
+            background: #fafaf5;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--ink);
+        }
+
+        .reminder-box input:focus {
+            outline: none;
+            border-color: #91b84e;
+            box-shadow: 0 0 0 3px rgba(200,241,105,.22);
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 11px 16px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .set-btn {
+            margin-top: 15px;
+            background: #263324;
+            color: var(--lime);
+        }
+
+        .set-btn:hover {
+            background: #40513b;
+            transform: translateY(-2px);
+        }
+
+        .reminder-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            background: #fafaf5;
+            border: 1px solid #dfe4d8;
+            border-radius: 10px;
+            padding: 13px;
+            margin-top: 10px;
+        }
+
+        .reminder-item p {
+            margin: 5px 0;
+            overflow-wrap: anywhere;
+            color: #35452c;
+            font-size: 12px;
+        }
+
+        .reminder-date {
+            color: #849080 !important;
+            font-size: 11px !important;
+        }
+
+        .delete-reminder {
+            background: #f5e1de;
+            color: #b14e43;
+            flex-shrink: 0;
+        }
+
+        .delete-reminder:hover {
+            background: #f0d2ce;
+        }
+
+        .empty-reminders {
+            color: #849080;
+            font-size: 12px;
+            margin-bottom: 0;
+        }
+
+        .status-message {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #607b3e;
+            font-weight: 600;
+        }
+
+        .reminder-list-title {
+            margin-top: 25px !important;
+            padding-top: 18px;
+            border-top: 1px solid #dce4d1;
+        }
+
+        /* ACTIONS */
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 27px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .back-button {
+            background: #e5e9df;
+            color: #56614f;
+        }
+
+        .edit-button {
+            background: #263324;
+            color: var(--lime);
+        }
+
+        .action-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .edit-button:hover {
+            background: #40513b;
+        }
+
+        footer {
+            width: 90%;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 0 0 30px;
+            color: #7e8b7e;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        footer span:last-child {
+            color: var(--lime);
+            letter-spacing: 1px;
+        }
+
+        @media(max-width: 600px) {
+            header {
+                padding: 17px 5%;
+            }
+
+            .header-tag {
+                display: none;
+            }
+
+            .container {
+                width: 93%;
+                margin: 27px auto;
+            }
+
+            .card {
+                padding: 19px;
+                border-radius: 16px;
+            }
+
+            .profile {
+                gap: 13px;
+            }
+
+            .avatar {
+                width: 61px;
+                height: 61px;
+                min-width: 61px;
+                border-radius: 16px;
+                font-size: 25px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-link {
+                width: 100%;
+            }
+
+            footer {
+                width: 93%;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        <div class="brand-icon">C.</div>
+        <div>
+            <h1>ContactHub</h1>
+            <p>Your people. One place.</p>
+        </div>
+    </div>
+
+    <div class="header-tag">PERSONAL NETWORK / 03</div>
+</header>
+
+<div class="container">
+
+    <a class="back-link" href="/">← Back to contacts</a>
+
+    <div class="card">
+
+        <!-- PROFILE -->
+
+        <div class="profile">
+            <div class="avatar"
+                 th:text="${#strings.substring(contact.name,0,1).toUpperCase()}">
+            </div>
+
+            <div>
+                <h2 th:text="${contact.name}"></h2>
+                <p th:text="${contact.category}"></p>
+
+                <span class="profile-label"
+                      th:text="${contact.favourite ? '★ YOUR FAVOURITE' : 'CONTACT PROFILE'}">
+                </span>
+            </div>
+        </div>
+
+        <!-- BASIC INFORMATION -->
+
+        <h3 class="section-title">
+            <span class="section-number">01</span>
+            Basic Information
+        </h3>
+
+        <div class="details-grid">
+
+            <div class="detail">
+                <strong>Phone Number</strong>
+                <span th:text="${contact.phone}"></span>
+            </div>
+
+            <div class="detail">
+                <strong>Alternate Phone</strong>
+                <span th:text="${contact.alternatePhone ?: 'Not provided'}"></span>
+            </div>
+
+            <div class="detail">
+                <strong>Email Address</strong>
+                <span th:text="${contact.email ?: 'Not provided'}"></span>
+            </div>
+
+            <div class="detail">
+                <strong>Address</strong>
+                <span th:text="${contact.address ?: 'Not provided'}"></span>
+            </div>
+
+        </div>
+
+        <!-- PROFESSIONAL INFORMATION -->
+
+        <h3 class="section-title">
+            <span class="section-number">02</span>
+            Professional Information
+        </h3>
+
+        <div class="details-grid">
+
+            <div class="detail">
+                <strong>Category</strong>
+                <span th:text="${contact.category}"></span>
+            </div>
+
+            <div class="detail">
+                <strong>Company</strong>
+                <span th:text="${contact.companyName ?: 'Not provided'}"></span>
+            </div>
+
+            <div class="detail">
+                <strong>Designation</strong>
+                <span th:text="${contact.designation ?: 'Not provided'}"></span>
+            </div>
+
+            <div class="detail">
+                <strong>Favourite Status</strong>
+                <span th:text="${contact.favourite ? '★ Yes' : 'No'}"></span>
+            </div>
+
+        </div>
+
+        <!-- PERSONAL INFORMATION -->
+
+        <h3 class="section-title">
+            <span class="section-number">03</span>
+            Personal Information
+        </h3>
+
+        <div class="details-grid">
+
+            <div class="detail">
+                <strong>Birthday</strong>
+                <span th:text="${contact.birthday ?: 'Not provided'}"></span>
+            </div>
+
+        </div>
+
+        <!-- NOTES -->
+
+        <h3 class="section-title">
+            <span class="section-number">04</span>
+            Notes & Additional Details
+        </h3>
+
+        <div class="notes"
+             th:text="${contact.notes ?: 'No additional notes'}">
+        </div>
+
+        <!-- REMINDERS -->
+
+        <h3 class="section-title">
+            <span class="section-number">05</span>
+            Reminders
+        </h3>
+
+        <div class="reminder-box">
+
+            <h3>Never miss an important moment.</h3>
+
+            <p class="reminder-description">
+                Create a reminder for this contact and receive a browser notification.
+            </p>
+
+            <label for="reminderMessage">Reminder Message</label>
+
+            <input type="text" id="reminderMessage"
+                   placeholder="Example: Call this person">
+
+            <label for="reminderDate">Date and Time</label>
+
+            <input type="datetime-local" id="reminderDate">
+
+            <button type="button" class="set-btn" onclick="addReminder()">
+                ＋ Set Reminder
+            </button>
+
+            <div id="statusMessage" class="status-message"></div>
+
+            <h3 class="reminder-list-title">Your Saved Reminders</h3>
+
+            <div id="reminderList"></div>
+
+        </div>
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <a class="action-link back-button" href="/">
+                ← Back to Contacts
+            </a>
+
+            <a class="action-link edit-button"
+               th:href="@{/edit/{phone}(phone=${contact.phone})}">
+                Edit Contact →
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <span>CONTACTHUB · YOUR CONNECTIONS, ORGANIZED.</span>
+    <span>MADE TO KEEP YOU CONNECTED ✳</span>
+</footer>
+
+<script th:inline="javascript">
+
+    const contactPhone = /*[[${contact.phone}]]*/ "";
+    const storageKey = "contacthub_reminders_" + contactPhone;
+
+    let reminderTimers = {};
+
+    function getReminders() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+            return Array.isArray(saved) ? saved : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function saveReminders(reminders) {
+        localStorage.setItem(storageKey, JSON.stringify(reminders));
+    }
+
+    function addReminder() {
+        const messageInput = document.getElementById("reminderMessage");
+        const dateInput = document.getElementById("reminderDate");
+
+        const message = messageInput.value.trim();
+        const reminderTime = new Date(dateInput.value).getTime();
+
+        if (!message || !dateInput.value) {
+            showStatus("Please enter a message and select a date and time.");
+            return;
+        }
+
+        if (!Number.isFinite(reminderTime) || reminderTime <= Date.now()) {
+            showStatus("Please select a future date and time.");
+            return;
+        }
+
+        if (!("Notification" in window)) {
+            showStatus("Your browser does not support notifications.");
+            return;
+        }
+
+        Notification.requestPermission().then(permission => {
+
+            if (permission !== "granted") {
+                showStatus("Please allow notifications in your browser settings.");
+                return;
+            }
+
+            const reminders = getReminders();
+
+            const reminder = {
+                id: Date.now().toString() + Math.random().toString(16).slice(2),
+                message: message,
+                time: reminderTime
+            };
+
+            reminders.push(reminder);
+            saveReminders(reminders);
+
+            messageInput.value = "";
+            dateInput.value = "";
+
+            showStatus("Reminder saved successfully!");
+            renderReminders();
+            scheduleReminder(reminder);
+
+        });
+    }
+
+    function scheduleReminder(reminder) {
+        const remainingTime = reminder.time - Date.now();
+
+        if (remainingTime <= 0) {
+            sendNotification(reminder);
+            return;
+        }
+
+        const delay = Math.min(remainingTime, 2147480000);
+
+        reminderTimers[reminder.id] = setTimeout(() => {
+
+            if (Date.now() < reminder.time) {
+                scheduleReminder(reminder);
+            } else {
+                sendNotification(reminder);
+            }
+
+        }, delay);
+    }
+
+    function sendNotification(reminder) {
+
+        const reminders = getReminders();
+
+        const stillSaved = reminders.some(item => item.id === reminder.id);
+
+        if (!stillSaved) return;
+
+        if (Notification.permission === "granted") {
+            new Notification("ContactHub Reminder", {
+                body: reminder.message
+            });
+        }
+
+        saveReminders(reminders.filter(item => item.id !== reminder.id));
+
+        delete reminderTimers[reminder.id];
+
+        renderReminders();
+    }
+
+    function deleteReminder(id) {
+
+        if (reminderTimers[id]) {
+            clearTimeout(reminderTimers[id]);
+            delete reminderTimers[id];
+        }
+
+        const reminders = getReminders().filter(item => item.id !== id);
+
+        saveReminders(reminders);
+
+        renderReminders();
+
+        showStatus("Reminder deleted.");
+    }
+
+    function renderReminders() {
+
+        const list = document.getElementById("reminderList");
+
+        const reminders = getReminders().sort((a, b) => a.time - b.time);
+
+        list.innerHTML = "";
+
+        if (reminders.length === 0) {
+            list.innerHTML = '<p class="empty-reminders">No reminders set yet.</p>';
+            return;
+        }
+
+        reminders.forEach(reminder => {
+
+            const item = document.createElement("div");
+            item.className = "reminder-item";
+
+            const details = document.createElement("div");
+
+            const message = document.createElement("p");
+            const date = document.createElement("p");
+
+            message.textContent = reminder.message;
+
+            date.className = "reminder-date";
+            date.textContent = new Date(reminder.time).toLocaleString();
+
+            details.appendChild(message);
+            details.appendChild(date);
+
+            const deleteButton = document.createElement("button");
+
+            deleteButton.className = "delete-reminder";
+            deleteButton.textContent = "Delete";
+            deleteButton.type = "button";
+
+            deleteButton.addEventListener("click", () => {
+                deleteReminder(reminder.id);
+            });
+
+            item.appendChild(details);
+            item.appendChild(deleteButton);
+
+            list.appendChild(item);
+
+        });
+    }
+
+    function showStatus(message) {
+        document.getElementById("statusMessage").textContent = message;
+    }
+
+    function loadReminders() {
+
+        renderReminders();
+
+        const reminders = getReminders();
+
+        reminders.forEach(reminder => {
+
+            if (reminder.time <= Date.now()) {
+                sendNotification(reminder);
+            } else {
+                scheduleReminder(reminder);
+            }
+
+        });
+    }
+
+    loadReminders();
+
+</script>
+
+</body>
+</html>

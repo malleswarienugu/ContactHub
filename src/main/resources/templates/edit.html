@@ -1,0 +1,510 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Contact | ContactHub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #111512;
+            --panel: #1a211c;
+            --surface: #f3f2e9;
+            --lime: #c8f169;
+            --ink: #263324;
+            --muted: #849080;
+            --border: #dfe4d8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: #f3f4ed;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 21px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,.09);
+            background: #151b16;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            background: var(--lime);
+            color: var(--ink);
+            border-radius: 14px;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 23px;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .header-tag {
+            color: var(--lime);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            max-width: 820px;
+            width: 90%;
+            margin: 42px auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 20px;
+            transition: .2s;
+        }
+
+        .back-link:hover {
+            color: var(--lime);
+        }
+
+        .intro {
+            margin-bottom: 25px;
+        }
+
+        .eyebrow {
+            color: var(--lime);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 11px;
+        }
+
+        .intro h2 {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(28px, 4vw, 38px);
+            letter-spacing: -1.5px;
+            color: #f3f4ed;
+        }
+
+        .intro p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 9px;
+        }
+
+        .card {
+            background: var(--surface);
+            color: var(--ink);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.22);
+        }
+
+        .profile-strip {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding-bottom: 23px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 23px;
+        }
+
+        .avatar {
+            width: 54px;
+            height: 54px;
+            min-width: 54px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            background: #e1edce;
+            color: #526d31;
+            font-family: 'Manrope', sans-serif;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .profile-strip strong {
+            display: block;
+            font-family: 'Manrope', sans-serif;
+            font-size: 15px;
+        }
+
+        .profile-strip small {
+            display: block;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #607b3e;
+            margin: 25px 0 14px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .section-number {
+            display: grid;
+            place-items: center;
+            width: 27px;
+            height: 27px;
+            border-radius: 8px;
+            background: #e2ebd3;
+            color: #526d31;
+            font-size: 11px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field label {
+            display: block;
+            color: #64705d;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dce1d6;
+            border-radius: 9px;
+            background: #fafaf5;
+            color: var(--ink);
+            font-family: inherit;
+            font-size: 13px;
+            transition: .2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #91b84e;
+            box-shadow: 0 0 0 3px rgba(200,241,105,.22);
+        }
+
+        textarea {
+            min-height: 95px;
+            resize: vertical;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .form-note {
+            color: #879181;
+            font-size: 11px;
+            margin-top: 7px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 27px;
+            padding-top: 21px;
+            border-top: 1px solid var(--border);
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 19px;
+            border: none;
+            border-radius: 9px;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .save-button {
+            background: #263324;
+            color: var(--lime);
+        }
+
+        .save-button:hover {
+            background: #40513b;
+            transform: translateY(-2px);
+        }
+
+        .cancel-button {
+            background: #e5e9df;
+            color: #56614f;
+        }
+
+        .cancel-button:hover {
+            background: #dce3d3;
+        }
+
+        footer {
+            width: 90%;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 0 30px;
+            color: #7e8b7e;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        footer span:last-child {
+            color: var(--lime);
+            letter-spacing: 1px;
+        }
+
+        @media(max-width: 600px) {
+            header {
+                padding: 17px 5%;
+            }
+
+            .header-tag {
+                display: none;
+            }
+
+            .container {
+                width: 93%;
+                margin: 28px auto;
+            }
+
+            .card {
+                padding: 19px;
+                border-radius: 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .buttons {
+                flex-direction: column-reverse;
+            }
+
+            .button {
+                width: 100%;
+            }
+
+            footer {
+                width: 93%;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        <div class="brand-icon">C.</div>
+        <div>
+            <h1>ContactHub</h1>
+            <p>Your people. One place.</p>
+        </div>
+    </div>
+
+    <div class="header-tag">PERSONAL NETWORK / 02</div>
+</header>
+
+<div class="container">
+
+    <a class="back-link" href="/">← Back to contacts</a>
+
+    <div class="intro">
+        <div class="eyebrow">KEEP INFORMATION UP TO DATE</div>
+        <h2>Edit your connection.</h2>
+        <p>Update the details below and keep your contact information accurate.</p>
+    </div>
+
+    <div class="card">
+
+        <div class="profile-strip">
+            <div class="avatar"
+                 th:text="${#strings.substring(contact.name,0,1).toUpperCase()}">
+            </div>
+
+            <div>
+                <strong th:text="${contact.name}"></strong>
+                <small>Editing contact information</small>
+            </div>
+        </div>
+
+        <form method="post"
+              th:action="@{/update/{oldPhone}(oldPhone=${contact.phone})}">
+
+            <h3 class="section-title">
+                <span class="section-number">01</span>
+                Basic Information
+            </h3>
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="name">Full Name *</label>
+                    <input id="name" type="text" name="name"
+                           placeholder="Full Name"
+                           th:value="${contact.name}" required>
+                </div>
+
+                <div class="field">
+                    <label for="phone">Phone Number *</label>
+                    <input id="phone" type="text" name="phone"
+                           placeholder="10-digit Phone Number"
+                           th:value="${contact.phone}"
+                           pattern="[0-9]{10}" maxlength="10" required>
+                </div>
+
+                <div class="field">
+                    <label for="alternatePhone">Alternate Phone</label>
+                    <input id="alternatePhone" type="text" name="alternatePhone"
+                           placeholder="Alternate Phone Number"
+                           th:value="${contact.alternatePhone}"
+                           pattern="[0-9]{10}" maxlength="10">
+                </div>
+
+                <div class="field">
+                    <label for="email">Email Address</label>
+                    <input id="email" type="email" name="email"
+                           placeholder="Email Address"
+                           th:value="${contact.email}">
+                </div>
+
+                <div class="field full">
+                    <label for="address">Full Address</label>
+                    <input id="address" type="text" name="address"
+                           placeholder="Full Address"
+                           th:value="${contact.address}">
+                </div>
+
+            </div>
+
+            <h3 class="section-title">
+                <span class="section-number">02</span>
+                Additional Information
+            </h3>
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="category">Contact Category *</label>
+                    <select id="category" name="category" required>
+                        <option value="Personal"
+                                th:selected="${contact.category == 'Personal'}">
+                            Personal
+                        </option>
+
+                        <option value="Professional"
+                                th:selected="${contact.category == 'Professional'}">
+                            Professional
+                        </option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="companyName">Company Name</label>
+                    <input id="companyName" type="text" name="companyName"
+                           placeholder="Company Name"
+                           th:value="${contact.companyName}">
+                </div>
+
+                <div class="field">
+                    <label for="designation">Designation</label>
+                    <input id="designation" type="text" name="designation"
+                           placeholder="Designation"
+                           th:value="${contact.designation}">
+                </div>
+
+                <div class="field">
+                    <label for="birthday">Birthday</label>
+                    <input id="birthday" type="date" name="birthday"
+                           th:value="${contact.birthday}">
+                </div>
+
+                <div class="field full">
+                    <label for="notes">Notes / Additional Details</label>
+                    <textarea id="notes" name="notes"
+                              placeholder="Write something useful about this contact..."
+                              th:text="${contact.notes}"></textarea>
+                </div>
+
+            </div>
+
+            <div class="buttons">
+                <a class="button cancel-button"
+                   th:href="@{/view/{phone}(phone=${contact.phone})}">
+                    Cancel
+                </a>
+
+                <button class="button save-button" type="submit">
+                    Save Changes →
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<footer>
+    <span>CONTACTHUB · YOUR CONNECTIONS, ORGANIZED.</span>
+    <span>MADE TO KEEP YOU CONNECTED ✳</span>
+</footer>
+
+</body>
+</html>

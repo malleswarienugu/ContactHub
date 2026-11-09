@@ -1,0 +1,1200 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContactHub | Your People, Connected</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #111512;
+            --panel: #1a211c;
+            --panel-light: #222b24;
+            --surface: #f3f2e9;
+            --surface-soft: #e9e9df;
+            --lime: #c8f169;
+            --lime-dark: #a8d64b;
+            --text: #f3f4ed;
+            --muted: #9da99e;
+            --ink: #20291f;
+            --border: rgba(255,255,255,.09);
+            --shadow: 0 20px 60px rgba(0,0,0,.22);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button, input, select, textarea {
+            font: inherit;
+        }
+
+        button, a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* HEADER */
+
+        header {
+            padding: 23px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: #151b16;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            background: var(--lime);
+            color: var(--ink);
+            border-radius: 14px;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 24px;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: .5px;
+        }
+
+        .header-tag {
+            color: var(--lime);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* MAIN CONTAINER */
+
+        .container {
+            width: 88%;
+            max-width: 1250px;
+            margin: 43px auto;
+        }
+
+        .welcome {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            color: var(--lime);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .welcome h2 {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(30px, 4vw, 43px);
+            line-height: 1.15;
+            letter-spacing: -2px;
+            margin: 0;
+            color: var(--text);
+        }
+
+        .welcome h2 span {
+            color: var(--lime);
+        }
+
+        .welcome p {
+            color: var(--muted);
+            margin: 12px 0 0;
+            font-size: 14px;
+        }
+
+        .date-label {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* MAIN CARD */
+
+        .card {
+            background: var(--surface);
+            color: var(--ink);
+            padding: 28px;
+            border-radius: 22px;
+            margin-bottom: 22px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 23px;
+        }
+
+        .section-heading h2 {
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: -.7px;
+            color: var(--ink);
+        }
+
+        .section-heading p {
+            color: #778174;
+            font-size: 12px;
+            margin: 5px 0 0;
+        }
+
+        .section-count {
+            background: #e3e9d5;
+            color: #52643b;
+            padding: 8px 13px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* NAVIGATION */
+
+        .navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 22px;
+        }
+
+        .nav-link, button {
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 11px 15px;
+            border-radius: 9px;
+            transition: .2s ease;
+        }
+
+        .nav-link {
+            color: #65705f;
+            background: #e9ebe2;
+        }
+
+        .nav-link:hover {
+            background: #dce5cc;
+            color: #304225;
+            transform: translateY(-2px);
+        }
+
+        .add-button {
+            background: #263324;
+            color: var(--lime);
+        }
+
+        .add-button:hover {
+            background: #35462d;
+            transform: translateY(-2px);
+        }
+
+        /* SEARCH */
+
+        .search-area {
+            display: flex;
+            gap: 9px;
+            margin-bottom: 25px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dce1d6;
+            border-radius: 9px;
+            background: #fafaf5;
+            color: var(--ink);
+            font-size: 13px;
+            transition: .2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #91b84e;
+            box-shadow: 0 0 0 3px rgba(200,241,105,.22);
+        }
+
+        .search-area input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-area button {
+            background: #263324;
+            color: white;
+            padding: 0 22px;
+        }
+
+        .search-area button:hover {
+            background: #40513b;
+        }
+
+        .search-area .nav-link {
+            padding: 11px 17px;
+        }
+
+        /* CONTACT DIRECTORY */
+
+        .contact-layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .contact-list {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .letter-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #71805f;
+            font-family: 'Manrope', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 25px 0 10px;
+            text-transform: uppercase;
+        }
+
+        .letter-heading::after {
+            content: "";
+            height: 1px;
+            background: #dfe4d8;
+            flex: 1;
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px;
+            margin-bottom: 9px;
+            border: 1px solid #e7e9df;
+            border-radius: 13px;
+            background: #fbfbf6;
+            transition: .22s ease;
+        }
+
+        .contact-row:hover {
+            border-color: #b9ce91;
+            transform: translateX(4px);
+            box-shadow: 0 6px 18px rgba(35,55,25,.07);
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
+            border-radius: 14px;
+            background: #e1edce;
+            color: #526d31;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Manrope', sans-serif;
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .contact-info strong {
+            display: block;
+            margin-bottom: 5px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 14px;
+            color: #263324;
+            overflow-wrap: anywhere;
+        }
+
+        .contact-info small {
+            color: #849080;
+            font-size: 11px;
+            overflow-wrap: anywhere;
+        }
+
+        .contact-actions {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .contact-actions form {
+            display: inline;
+        }
+
+        .action-link, .contact-actions button {
+            padding: 8px 10px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 700;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .view-button {
+            background: #e5edda;
+            color: #506b32;
+        }
+
+        .edit-button {
+            background: #e8e6f1;
+            color: #66568e;
+        }
+
+        .fav-button {
+            background: #f5ebd3;
+            color: #a8791d;
+        }
+
+        .delete-button {
+            background: #f5e1de;
+            color: #b14e43;
+        }
+
+        .contact-actions button:hover,
+        .action-link:hover {
+            filter: brightness(.94);
+            transform: translateY(-2px);
+        }
+
+        /* ALPHABET INDEX */
+
+        .alphabet {
+            position: sticky;
+            top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            align-items: center;
+            padding: 9px 6px;
+            background: #e9ede1;
+            border-radius: 20px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .alphabet a {
+            color: #728264;
+            font-size: 10px;
+            font-weight: 800;
+            text-decoration: none;
+            padding: 4px;
+            border-radius: 5px;
+            transition: .2s;
+        }
+
+        .alphabet a:hover {
+            color: #263324;
+            background: var(--lime);
+        }
+
+        /* EMPTY STATE */
+
+        .empty {
+            text-align: center;
+            padding: 55px 20px;
+            color: #849080;
+            background: #fafaf5;
+            border: 1px dashed #ccd5c3;
+            border-radius: 15px;
+            font-size: 13px;
+        }
+
+        /* ADD CONTACT MODAL */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(4,10,5,.78);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: fadeIn .2s ease;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            color: var(--ink);
+            width: 100%;
+            max-width: 720px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 30px 90px rgba(0,0,0,.4);
+            animation: slideUp .25s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #dfe4d8;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .close-button {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 10px;
+            background: #e5e9df;
+            color: #33412e;
+            font-size: 21px;
+        }
+
+        .form-section-title {
+            color: #607b3e;
+            margin: 22px 0 12px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .form-grid textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+            border-top: 1px solid #dfe4d8;
+            padding-top: 18px;
+        }
+
+        .cancel-button {
+            background: #e4e8df;
+            color: #56614f;
+        }
+
+        .form-buttons .add-button {
+            padding: 12px 20px;
+        }
+
+        /* REMINDER NOTIFICATION */
+
+        .reminder-toast {
+            display: none;
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            z-index: 1000;
+            width: 320px;
+            max-width: calc(100% - 30px);
+            background: #f5f5ed;
+            border-left: 5px solid #8dbb42;
+            border-radius: 13px;
+            padding: 19px;
+            box-shadow: 0 12px 40px rgba(0,0,0,.35);
+            color: #263324;
+        }
+
+        .reminder-toast.show {
+            display: block;
+            animation: slideUp .25s ease;
+        }
+
+        .reminder-toast strong {
+            color: #607d37;
+            font-size: 14px;
+        }
+
+        .reminder-toast p {
+            margin: 10px 0;
+            overflow-wrap: anywhere;
+            color: #46523f;
+            font-size: 13px;
+        }
+
+        .reminder-toast button {
+            background: #263324;
+            color: var(--lime);
+        }
+
+        /* FOOTER */
+
+        footer {
+            width: 88%;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 10px 0 30px;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            color: #7e8b7e;
+            font-size: 11px;
+        }
+
+        footer span:last-child {
+            color: var(--lime);
+            letter-spacing: 1px;
+        }
+
+        /* ANIMATIONS */
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 800px) {
+            .container {
+                width: 93%;
+                margin: 28px auto;
+            }
+
+            header {
+                padding: 18px 4%;
+            }
+
+            .welcome {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .date-label {
+                display: none;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .contact-row {
+                flex-wrap: wrap;
+                align-items: flex-start;
+            }
+
+            .contact-actions {
+                width: 100%;
+                padding-left: 58px;
+                justify-content: flex-start;
+            }
+
+            .alphabet {
+                max-height: 65vh;
+            }
+        }
+
+        @media(max-width: 520px) {
+            header h1 {
+                font-size: 20px;
+            }
+
+            .header-tag {
+                display: none;
+            }
+
+            .container {
+                width: 94%;
+                margin-top: 25px;
+            }
+
+            .welcome h2 {
+                font-size: 32px;
+            }
+
+            .card {
+                padding: 15px;
+                border-radius: 16px;
+            }
+
+            .section-heading h2 {
+                font-size: 19px;
+            }
+
+            .navigation {
+                gap: 7px;
+            }
+
+            .navigation .nav-link,
+            .navigation button {
+                padding: 10px 11px;
+                font-size: 10px;
+            }
+
+            .search-area {
+                flex-wrap: wrap;
+            }
+
+            .search-area input {
+                flex-basis: 100%;
+            }
+
+            .search-area button {
+                flex: 1;
+                padding: 12px;
+            }
+
+            .contact-layout {
+                gap: 8px;
+            }
+
+            .alphabet {
+                padding: 6px 3px;
+            }
+
+            .alphabet a {
+                font-size: 9px;
+                padding: 3px;
+            }
+
+            .contact-row {
+                padding: 11px;
+                gap: 10px;
+            }
+
+            .contact-actions {
+                padding-left: 0;
+            }
+
+            .contact-actions button,
+            .action-link {
+                padding: 8px;
+                font-size: 9px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .modal-content {
+                padding: 19px;
+            }
+
+            footer {
+                width: 94%;
+                flex-direction: column;
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        <div class="brand-icon">C.</div>
+        <div>
+            <h1>ContactHub</h1>
+            <p>Your people. One place.</p>
+        </div>
+    </div>
+
+    <div class="header-tag">PERSONAL NETWORK / 01</div>
+</header>
+
+<div class="container">
+
+    <div class="welcome">
+        <div>
+            <div class="eyebrow">YOUR CONNECTION SPACE</div>
+            <h2>People make<br><span>everything matter.</span></h2>
+            <p>Keep your important connections organised and close.</p>
+        </div>
+
+        <div class="date-label">✦ &nbsp; Your personal network</div>
+    </div>
+
+    <div class="card">
+
+        <div class="section-heading">
+            <div>
+                <h2>My Contacts</h2>
+                <p>Your complete collection of connections</p>
+            </div>
+
+            <div class="section-count">CONTACT DIRECTORY</div>
+        </div>
+
+        <!-- Navigation with live counts -->
+
+        <div class="navigation">
+
+            <a class="nav-link" href="/">
+                All Contacts
+                (<span th:text="${allContactsCount != null ? allContactsCount : 0}">0</span>)
+            </a>
+
+            <a class="nav-link" href="/personal">
+                Personal
+                (<span th:text="${personalCount != null ? personalCount : 0}">0</span>)
+            </a>
+
+            <a class="nav-link" href="/professional">
+                Professional
+                (<span th:text="${professionalCount != null ? professionalCount : 0}">0</span>)
+            </a>
+
+            <a class="nav-link" href="/favourites">
+                ★ Favourites
+                (<span th:text="${favouritesCount != null ? favouritesCount : 0}">0</span>)
+            </a>
+
+            <button class="add-button" type="button" id="newContactBtn">
+    ＋ New Contact
+</button>
+
+        </div>
+
+        <!-- Search -->
+
+        <form action="/search" method="get" class="search-area">
+
+            <input type="text" name="q"
+                   placeholder="⌕  Find someone by name or phone number"
+                   th:value="${query}">
+
+            <button type="submit">Search →</button>
+
+            <a class="nav-link" href="/">Clear</a>
+
+        </form>
+
+        <div class="contact-layout">
+
+            <div class="contact-list">
+
+                <div th:if="${#lists.isEmpty(contacts)}" class="empty">
+                    <div style="font-size:32px; margin-bottom:12px;">✳</div>
+                    <strong>No contacts found</strong>
+                    <p>Click New Contact to add someone to your network.</p>
+                </div>
+
+                <div th:each="group : ${contactGroups}"
+                     th:id="'letter-' + ${group.key}">
+
+                    <h3 class="letter-heading"
+                        th:text="${group.key}"></h3>
+
+                    <div th:each="contact : ${group.value}"
+                         class="contact-row">
+
+                        <div class="avatar"
+                             th:text="${#strings.substring(contact.name,0,1).toUpperCase()}">
+                        </div>
+
+                        <div class="contact-info">
+
+                            <strong th:text="${contact.name}"></strong>
+
+                            <small>
+                                <span th:text="${contact.phone}"></span>
+                                ·
+                                <span th:text="${contact.category}"></span>
+
+                                <span th:if="${contact.favourite}">
+                                    · ★ Favourite
+                                </span>
+                            </small>
+
+                        </div>
+
+                        <div class="contact-actions">
+
+                            <a class="action-link view-button"
+                               th:href="@{/view/{phone}(phone=${contact.phone})}">
+                                View ↗
+                            </a>
+
+                            <a class="action-link edit-button"
+                               th:href="@{/edit/{phone}(phone=${contact.phone})}">
+                                Edit
+                            </a>
+
+                            <form th:action="@{/favourite/{phone}(phone=${contact.phone})}"
+                                  method="post">
+
+                                <button class="fav-button" type="submit"
+                                        th:text="${contact.favourite ? '★' : '☆'}">
+                                </button>
+
+                            </form>
+
+                            <form th:action="@{/delete/{phone}(phone=${contact.phone})}"
+                                  method="post"
+                                  onsubmit="return confirm('Delete this contact?')">
+
+                                <button class="delete-button" type="submit">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alphabetical navigation -->
+
+            <nav class="alphabet" aria-label="Alphabetical navigation">
+
+                <a th:each="letter : ${#strings.listSplit('A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,#',',')}"
+                   th:href="'#letter-' + ${letter}"
+                   th:text="${letter}">
+                </a>
+
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+<footer>
+    <span>CONTACTHUB &nbsp;·&nbsp; YOUR CONNECTIONS, ORGANIZED.</span>
+    <span>MADE TO KEEP YOU CONNECTED ✳</span>
+</footer>
+
+<!-- Reminder notification -->
+
+<div class="reminder-toast" id="reminderToast">
+
+    <strong>🔔 ContactHub Reminder</strong>
+
+    <p id="reminderToastMessage"></p>
+
+    <button type="button" onclick="closeReminderToast()">
+        Dismiss
+    </button>
+
+</div>
+
+<!-- Add Contact Popup -->
+
+<div class="modal" id="contactModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <div>
+                <div class="eyebrow">BUILD YOUR NETWORK</div>
+                <h2>Add New Contact</h2>
+            </div>
+
+            <button class="close-button" type="button"
+                    onclick="closeModal()">×</button>
+
+        </div>
+
+        <form action="/add" method="post">
+
+            <h3 class="form-section-title">01 / Basic Information</h3>
+
+            <div class="form-grid">
+
+                <input type="text" name="name"
+                       placeholder="Full Name" required>
+
+                <input type="text" name="phone"
+                       placeholder="10-digit Phone Number"
+                       pattern="[0-9]{10}" maxlength="10" required>
+
+                <input type="text" name="alternatePhone"
+                       placeholder="Alternate Phone Number"
+                       pattern="[0-9]{10}" maxlength="10">
+
+                <input type="email" name="email"
+                       placeholder="Email Address">
+
+                <input class="full-width" type="text" name="address"
+                       placeholder="Full Address">
+
+            </div>
+
+            <h3 class="form-section-title">02 / Additional Information</h3>
+
+            <div class="form-grid">
+
+                <select name="category" required>
+                    <option value="Personal">Personal</option>
+                    <option value="Professional">Professional</option>
+                </select>
+
+                <input type="text" name="companyName"
+                       placeholder="Company Name">
+
+                <input type="text" name="designation"
+                       placeholder="Designation">
+
+                <input type="date" name="birthday">
+
+                <textarea class="full-width" name="notes"
+                          placeholder="Notes / Additional Details"></textarea>
+
+            </div>
+
+            <div class="form-buttons">
+
+                <button type="button" class="cancel-button"
+                        onclick="closeModal()">Cancel</button>
+
+                <button type="submit" class="add-button">
+                    Save Contact →
+                </button>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+
+    // Add Contact Popup
+
+    function openModal() {
+    const modal = document.getElementById("contactModal");
+
+    if (modal) {
+        modal.classList.add("show");
+    }
+}
+
+document.getElementById("newContactBtn").addEventListener("click", openModal);
+
+    function closeModal() {
+        document.getElementById("contactModal").classList.remove("show");
+    }
+
+    document.getElementById("contactModal").addEventListener("click", function(event) {
+        if (event.target === this) {
+            closeModal();
+        }
+    });
+
+
+    // Reminder Notification
+
+    let reminderQueue = [];
+    let isReminderVisible = false;
+
+    function showReminderNotification(message) {
+
+        reminderQueue.push(message);
+        displayNextReminder();
+
+    }
+
+    function displayNextReminder() {
+
+        if (isReminderVisible || reminderQueue.length === 0) {
+            return;
+        }
+
+        isReminderVisible = true;
+
+        const message = reminderQueue.shift();
+
+        const toast = document.getElementById("reminderToast");
+
+        document.getElementById("reminderToastMessage").textContent = message;
+
+        toast.classList.add("show");
+
+        // Also show Chrome desktop notification
+
+        if ("Notification" in window &&
+            Notification.permission === "granted") {
+
+            new Notification("ContactHub Reminder", {
+                body: message
+            });
+
+        }
+
+    }
+
+    function closeReminderToast() {
+
+        const toast = document.getElementById("reminderToast");
+
+        toast.classList.remove("show");
+
+        isReminderVisible = false;
+
+        displayNextReminder();
+
+    }
+
+
+    // Check saved reminders
+
+    function checkDueReminders() {
+
+        const keys = Object.keys(localStorage).filter(key =>
+            key.startsWith("contacthub_reminders_")
+        );
+
+        keys.forEach(key => {
+
+            let reminders = [];
+
+            try {
+
+                reminders = JSON.parse(localStorage.getItem(key) || "[]");
+
+            } catch (error) {
+
+                return;
+
+            }
+
+            const remainingReminders = [];
+
+            reminders.forEach(reminder => {
+
+                if (reminder.time <= Date.now()) {
+
+                    showReminderNotification(reminder.message);
+
+                } else {
+
+                    remainingReminders.push(reminder);
+
+                }
+
+            });
+
+            localStorage.setItem(key, JSON.stringify(remainingReminders));
+
+        });
+
+    }
+
+
+    // Check immediately when home page opens
+
+    checkDueReminders();
+
+
+    // Check every second
+
+    setInterval(checkDueReminders, 1000);
+
+
+    // Check when returning to the home page tab
+
+    document.addEventListener("visibilitychange", function() {
+
+        if (!document.hidden) {
+            checkDueReminders();
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
